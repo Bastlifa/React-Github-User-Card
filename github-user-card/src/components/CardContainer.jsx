@@ -4,10 +4,13 @@ import Card from './Card'
 const CardContainer = (props) =>
 {
     const { aFollowers, selectedUser } = props
+    
+    if (aFollowers === []) return null
+
     return (
         <CardContainDiv>
             <Card userData={selectedUser} />
-            {aFollowers.map((follower, index) => <Card key={index} userData={follower} />)}
+            { aFollowers.map((follower, index) => <Card key={index} userData={follower} />) }
         </CardContainDiv>
     )   
 }

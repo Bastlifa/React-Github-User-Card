@@ -41,7 +41,20 @@ export const CardContainDiv = styled.div`
 `;
 
 export const AppContainDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: grey;
     min-height: 100%;
     margin: 0;
+`;
+
+export const StyledForm = styled.form`
+    padding-top: 20px;
+    input
+    {
+        font-size: 2rem;
+        border-radius: 6px;
+        text-align: center;
+    }
 `;
