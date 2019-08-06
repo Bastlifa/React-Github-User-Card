@@ -1,26 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import axios from 'axios'
+import CardContainer from './components/CardContainer'
+import { AppContainDiv } from './StyledComps'
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor()
+  {
+    super()
+    this.state = 
+    {
+      personData: [],
+      followerData: []
+    }
+  }
+
+  getPerson = () =>
+  {
+    axios.get('https://api.github.com/users/Bastlifa')
+    .then (response => 
+    {
+      console.log("me",response)
+      this.setState({personData: response.data})
+    })
+    .catch( error =>
+    {
+      console.log("Error:", error)
+    })
+  }
+
+  getFollowers = () =>
+  {
+    axios.get('https://api.github.com/users/Bastlifa')
+    .then (response => axios.get(response.data.followers_url))
+    .then(response => 
+      {
+        response.data.forEach(follower =>
+          {
+            axios.get(follower.url)
+            .then(resp =>{console.log("follower", resp.data); this.setState({followerData: [...this.state.followerData, resp.data]})})
+          })
+      })
+    .catch( error =>
+    {
+      console.log("Error:", error)
+    })
+  }
+
+  componentDidMount()
+  {
+    this.getPerson()
+    this.getFollowers()
+  }
+  render() {
+    return (
+      <AppContainDiv>
+        <CardContainer selectedUser={this.state.personData} aFollowers={this.state.followerData} />
+      </AppContainDiv>
+    );
+  }
 }
 
 export default App;
